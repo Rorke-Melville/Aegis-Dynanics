@@ -2,13 +2,39 @@ import React, { useState, useEffect } from 'react';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileVisible, setIsMobileVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrolled = window.scrollY > 50;
+      setIsScrolled(scrolled);
+      
+      // Show navbar on mobile when scrolling
+      if (window.innerWidth <= 991) {
+        setIsMobileVisible(scrolled);
+      } else {
+        setIsMobileVisible(true);
+      }
     };
+
+    const handleResize = () => {
+      if (window.innerWidth > 991) {
+        setIsMobileVisible(true);
+      } else {
+        setIsMobileVisible(window.scrollY > 50);
+      }
+    };
+
+    handleScroll(); // Initial check
+    handleResize(); // Initial check
+    
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Shield SVG Component
@@ -196,8 +222,9 @@ const Navigation = () => {
         background: isScrolled ? 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)' : 'transparent',
         backdropFilter: isScrolled ? 'blur(10px)' : 'none',
         borderBottom: isScrolled ? '1px solid rgba(0, 255, 255, 0.6)' : 'none',
-        transition: 'background 0.5s ease, backdrop-filter 0.5s ease, border-bottom 0.5s ease',
-        zIndex: 1000
+        transition: 'background 0.5s ease, backdrop-filter 0.5s ease, border-bottom 0.5s ease, transform 0.3s ease',
+        zIndex: 1000,
+        transform: isMobileVisible ? 'translateY(0)' : 'translateY(-100%)'
       }}
     >
       <div className="container">

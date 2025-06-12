@@ -100,13 +100,19 @@ const Hero = () => {
           0%, 100% { opacity: 1; stroke-width: 2; }
           50% { opacity: 0.5; stroke-width: 4; }
         }
+
+        @media (max-width: 991px) {
+          .hero-mobile-spacing {
+            padding-top: 80px;
+          }
+        }
       `}</style>
       
       <section className="min-vh-100 d-flex align-items-center position-relative overflow-hidden" id="home">
         <div className="container position-relative">
           <div className="row align-items-center">
             <div className="col-lg-6">
-              <div className="text-white">
+              <div className="text-white hero-mobile-spacing">
                 <h1 className="display-2 fw-bold mb-4" style={{ 
                   background: 'linear-gradient(135deg, #ffffff 0%, #00ffff 100%)',
                   WebkitBackgroundClip: 'text',
